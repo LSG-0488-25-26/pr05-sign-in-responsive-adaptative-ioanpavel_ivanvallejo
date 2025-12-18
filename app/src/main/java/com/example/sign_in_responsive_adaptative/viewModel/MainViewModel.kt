@@ -2,63 +2,140 @@ package com.example.sign_in_responsive_adaptative.viewModel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.sign_in_responsive_adaptative.model.Login
+import com.example.sign_in_responsive_adaptative.model.RegistreInfo
 
-class MainViewModel: ViewModel() {
-    private val _login = mutableStateOf(Login())
-    val login get() = _login
-    var fullname: Boolean = false
-    var birthbdate: Boolean = false
-    var EMAIL: Boolean = false
-    var Telefono: Boolean = false
-    var NombreUser: Boolean = false
-    var passwd: Boolean = false
-    //Nombre completo
-    fun setFullName(name: String){
-        if (Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$").matches(name)){
-            _login.value = _login.value.copy(fullName =  name)
-            fullname = true
-        }else{
-            fullname = false
+class MainViewModel : ViewModel() {
+
+    private val _registreUserInfo = mutableStateOf(RegistreInfo())
+    val registreUserInfo get() = _registreUserInfo
+
+
+    //register user name setter
+    fun setName(nombre: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(nombre = nombre)
+    }
+    //register user surname1 setter
+    fun setSurnameFirst(apellido: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(apellido1 = apellido)
+    }
+    //register user surname2 setter
+    fun setSurnameSecond(apellido: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(apellido2 = apellido)
+    }
+    //register user email setter
+    fun setEmail(email: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(email = email)
+    }
+    //register user birthdate setter
+    fun setBirthdate(fecha: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(fechaNacimiento = fecha)
+    }
+    //register user passwd setter
+    fun setpasswd(passwd: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(passwd = passwd)
+    }
+    //register user passwd setter
+    fun setpasswdComprobation(passwd: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(passwdConfirm = passwd)
+    }
+    //register user gender setter
+    fun setTc(tc: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(tc = tc)
+    }
+    //register user username setter
+    fun setUserName(username: String) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(userName = username)
+    }
+
+    //comprobar username
+    fun setUserName(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(ValiduserName = valid)
+    }
+
+
+    //register user name setter
+    fun IsValidName(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(Validnombre = valid)
+    }
+    //register user surname1 setter
+    fun IsValidSurnameFirst(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(Validapellido1 = valid)
+    }
+    //register user surname2 setter
+    fun IsValidSurnameSecond(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(Validapellido2 = valid)
+    }
+    //register user email setter
+    fun IsValidEmail(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(Validemail = valid)
+    }
+    //register user birthdate setter
+    fun IsValidBirthdate(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(ValidfechaNacimiento = valid)
+    }
+    //register user passwd setter
+    fun IsValidpasswd(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(Validpasswd = valid)
+    }
+    //register user passwd setter
+    fun IsValidpasswdComprobation(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(ValidpasswdConfirm = valid)
+    }
+    //register user username setter
+    fun IsValidUserName(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(ValiduserName = valid)
+    }
+    //register user gender setter
+    fun IsValidTermsConditions(valid: Boolean) {
+        _registreUserInfo.value =
+            _registreUserInfo.value.copy(tc = valid)
+    }
+
+    //textfieldsValidation
+    fun textValid(id: String, valid: Boolean){
+        when (id){
+            "un" -> IsValidUserName(valid)
+            "n" -> IsValidName(valid)
+            "sn1" -> IsValidSurnameFirst(valid)
+            "sn2" -> IsValidSurnameSecond(valid)
+            "m" -> IsValidEmail(valid)
+            "bd" -> IsValidBirthdate(valid)
+            "pass" -> IsValidpasswd(valid)
+            "passC" -> if (_registreUserInfo.value.passwdConfirm
+                    .equals(_registreUserInfo.value.passwd)) IsValidpasswdComprobation(true) else IsValidpasswdComprobation(false)
+            "tc" -> IsValidTermsConditions(valid)
         }
     }
 
-    //fecha de cumpleaños
-    fun setBdate(bdate: String){
-        if (bdate.isEmpty()){
-            _login.value = _login.value.copy(Bdate =  bdate)
-            birthbdate = true
-        }else{birthbdate = false}
+    //Button enabler
+    fun registerInOrder(): Boolean {
+        return _registreUserInfo.value.ValiduserName &&
+                _registreUserInfo.value.Validnombre &&
+                _registreUserInfo.value.Validapellido1 &&
+                _registreUserInfo.value.Validapellido2 &&
+                _registreUserInfo.value.Validemail &&
+                _registreUserInfo.value.ValidfechaNacimiento &&
+                _registreUserInfo.value.Validpasswd &&
+                _registreUserInfo.value.ValidpasswdConfirm &&
+                _registreUserInfo.value.tc
     }
 
-    //mail
-    fun setmail(correo: String){
-        if (Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$").matches(correo)){
-            _login.value = _login.value.copy(mail = correo)
-            EMAIL = true
-        }else{EMAIL = false}
-    }
-    //telefono
-    fun settel(tel: String){
-        if (Regex("^[0-9]{9}$").matches(tel)){
-            _login.value = _login.value.copy(phone = tel.toInt())
-            Telefono = true
-        }else{Telefono = false}
-    }
-    //username
-    fun setusername(Username: String){
-        if (Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$").matches(Username)){
-            _login.value = _login.value.copy(username = Username)
-            NombreUser = true
-        }else{NombreUser = false}
-    }
-    //passwd
-    fun setpasswd(passwd1: String, passwd2: String){
-        if (passwd2.equals(passwd1)){
-            if (Regex("^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\/-]).{8,}$").matches(passwd1)){
-                _login.value = _login.value.copy(username = passwd1)
-                passwd = true
-            }else{passwd = false}
-        }else{passwd = false}
-    }
 }

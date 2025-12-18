@@ -2,138 +2,149 @@ package com.example.sign_in_responsive_adaptative.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sign_in_responsive_adaptative.R
+import com.example.sign_in_responsive_adaptative.ui.theme.Gray100
+import com.example.sign_in_responsive_adaptative.ui.theme.TextFieldStyles
+import com.example.sign_in_responsive_adaptative.view.StandartTextField
+import com.example.sign_in_responsive_adaptative.view.ValidatedPasswordField
 import com.example.sign_in_responsive_adaptative.viewModel.MainViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun register(viewModel: MainViewModel = viewModel()){
-    var fullname by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf("") }
-    var passwd1 by remember { mutableStateOf("") }
-    var passwd2 by remember { mutableStateOf("") }
-    var user by remember { mutableStateOf("") }
-    var tel by remember { mutableStateOf("") }
-    var mail by remember { mutableStateOf("") }
-    val datePickerState = rememberDatePickerState()
-    var showDialog by remember { mutableStateOf(false) }
+fun Registre(
+    viewModel: MainViewModel = viewModel(),
+    modifier: Modifier
+){
     Card(){
-        Column {
-            Text("Registre")
-            //fullname
-            TextField(
-                value = fullname,
-                onValueChange = {
-                    fullname = it
-                    viewModel.setFullName(name = it)
-                                },
-                label = { Text("Fullname") }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ){
+            Text(
+                text = "Registre",
+                style = TextFieldStyles.h4
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Divider(
+                color = Gray100,
+                thickness = 1.dp
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.userName,
+                onValueChange = { viewModel.setUserName(it) },
+                placeholder = "Nombre de usuario",
+                assistiveText = "UserName",
+                regex = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"),
+                id = "un",
+                modifier = Modifier.width(250.dp)
+            )
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.nombre,
+                onValueChange = { viewModel.setName(it) },
+                placeholder = "Nombre",
+                assistiveText = "Nose admiten numeros ni caracteres especiales",
+                regex = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"),
+                id = "n",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.apellido1,
+                onValueChange = { viewModel.setSurnameFirst(it) },
+                placeholder = "Primer Apellido",
+                assistiveText = "Nose admiten numeros ni caracteres especiales",
+                regex = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"),
+                id = "sn1",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.apellido2,
+                onValueChange = { viewModel.setSurnameSecond(it) },
+                placeholder = "Segundo Apellido",
+                assistiveText = "Nose admiten numeros ni caracteres especiales",
+                regex = Regex("^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$"),
+                id = "sn2",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.email,
+                onValueChange = { viewModel.setEmail(it) },
+                placeholder = "Email",
+                assistiveText = "Formato email standar ejemplo@ejemplo.com",
+                regex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"),
+                id = "m",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            StandartTextField(
+                value = viewModel.registreUserInfo.value.fechaNacimiento,
+                onValueChange = { viewModel.setBirthdate(it) },
+                placeholder = "dd/mm/yyyy",
+                assistiveText = "Fecha de nacimiento",
+                regex = Regex("^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/([0-9]{4})$"),
+                id = "bd",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            ValidatedPasswordField(
+                value = viewModel.registreUserInfo.value.passwd,
+                onValueChange = { viewModel.setpasswd(it) },
+                placeholder = "Contraseña",
+                assistiveText = "Mínimo 8 caracteres\n" +
+                        "1 letra mayuscula\n" +
+                        "1 numero\n" +
+                        "1 caracter especial",
+                regex = Regex("^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\/-]).{8,}$"),
+                visibilityIconRes = R.drawable.visibility_on,
+                visibilityOffIconRes = R.drawable.visibility_off,
+                id = "pass",
+                modifier = Modifier.width(250.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            ValidatedPasswordField(
+                value = viewModel.registreUserInfo.value.passwdConfirm,
+                onValueChange = { viewModel.setpasswdComprobation(it) },
+                placeholder = "Repite la contraseña",
+                assistiveText = "Repite la Contraseña",
+                regex = Regex(".*"),
+                visibilityIconRes = R.drawable.visibility_on,
+                visibilityOffIconRes = R.drawable.visibility_off,
+                id = "passC",
+                modifier = Modifier.width(250.dp)
+            )
 
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            //Birthdate
-            OutlinedTextField(
-                value = date,
-                onValueChange = {viewModel.setBdate(date)},          // no typing
-                readOnly = true,             // important
-                label = { Text("Birthdate") },
-                modifier = Modifier.fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = { showDialog = true }) {
-                        Icon(Icons.Default.DateRange, contentDescription = "Pick date")
-                    }
-                }
-            )
-            if (showDialog) {
-                DatePickerDialog(
-                    onDismissRequest = { showDialog = false },
-                    confirmButton = {
-                        TextButton(onClick = { showDialog = false }) {
-                            Text("Confirm")
-                        }
-                    }
-                ) {
-                    DatePicker(state = datePickerState)
-                }
+            Spacer(modifier = Modifier.height(10.dp))
+            Button(
+                onClick = {},
+                enabled = viewModel.registerInOrder()
+            ) {
+                Text("Registraro")
             }
-            Spacer(modifier = Modifier.height(5.dp))
-            //email
-            TextField(
-                value = mail,
-                onValueChange = {
-                    mail = it
-                    viewModel.setmail(correo = it)
-                },
-                label = { Text("Email") }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            //Telefono
-            TextField(
-                value = tel,
-                onValueChange = {
-                    tel = it
-                    viewModel.settel(tel = it)
-                },
-                label = { Text("Phone") }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            //Username
-            TextField(
-                value = user,
-                onValueChange = {
-                    user = it
-                    viewModel.setusername(Username = it)
-                },
-                label = { Text("Username") }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            //passwd1
-            TextField(
-                value = passwd1,
-                onValueChange = {
-                    passwd1 = it
-                },
-                label = { Text("Password") }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            //passwd2
-            TextField(
-                value = user,
-                onValueChange = {
-                    user = it
-                    viewModel.setpasswd(passwd1 = passwd1, passwd2 = passwd2)
-                },
-                label = { Text("Repeat Password") }
-            )
-            Spacer(modifier = Modifier.height(5.dp))
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
-fun RegistroPreview() {
-    register()
+fun RegistrePreview() {
+    Registre(modifier = Modifier.padding(16.dp))
 }
+
