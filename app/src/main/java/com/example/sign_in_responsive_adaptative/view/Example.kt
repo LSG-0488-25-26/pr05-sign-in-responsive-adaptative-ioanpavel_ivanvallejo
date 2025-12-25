@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.sign_in_responsive_adaptative.Greeting
 import com.example.sign_in_responsive_adaptative.R
 import com.example.sign_in_responsive_adaptative.ui.theme.Purple40
 import com.example.sign_in_responsive_adaptative.ui.theme.Sign_in_responsive_adaptativeTheme

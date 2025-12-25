@@ -3,6 +3,7 @@ package com.example.sign_in_responsive_adaptative.viewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.sign_in_responsive_adaptative.model.RegistreInfo
+import com.example.sign_in_responsive_adaptative.model.WindowSize
 
 class MainViewModel : ViewModel() {
 
@@ -137,5 +138,7 @@ class MainViewModel : ViewModel() {
                 _registreUserInfo.value.ValidpasswdConfirm &&
                 _registreUserInfo.value.tc
     }
+
+
 
 }
