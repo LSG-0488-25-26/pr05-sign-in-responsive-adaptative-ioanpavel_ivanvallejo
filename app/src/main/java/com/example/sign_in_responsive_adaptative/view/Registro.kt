@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.sign_in_responsive_adaptative.R
 import com.example.sign_in_responsive_adaptative.model.WindowSizeClass
 import com.example.sign_in_responsive_adaptative.ui.theme.Gray100
@@ -34,6 +35,7 @@ import java.time.format.TextStyle
 
 @Composable
 fun Registre(
+    navController: NavController,
     viewModel: MainViewModel = viewModel(),
     modifier: Modifier = Modifier,
     separation: Dp = 16.dp
@@ -218,7 +220,7 @@ fun Registre(
             Spacer(modifier = Modifier.height(adaptiveSeparation))
 
             Button(
-                onClick = {},
+                onClick = {navController.navigate("SelectionView")},
                 enabled = viewModel.registerInOrder(),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -243,12 +245,5 @@ fun Registre(
             Spacer(modifier = Modifier.height(adaptiveSeparation))
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun RegistrePreview() {
-    Registre(modifier = Modifier.padding(16.dp),
-        separation = 15.dp)
 }
 
