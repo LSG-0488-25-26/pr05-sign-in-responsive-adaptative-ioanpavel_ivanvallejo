@@ -1,5 +1,6 @@
 package com.example.sign_in_responsive_adaptative
 
+import AppNavHost
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,15 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Sign_in_responsive_adaptativeTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                        .padding(20.dp),
-                    contentAlignment = Alignment.Center
-                ){
-                    Registre(modifier = Modifier,
-                        separation = 20.dp)
-                }
-
+                AppNavHost()
             }
         }
     }
