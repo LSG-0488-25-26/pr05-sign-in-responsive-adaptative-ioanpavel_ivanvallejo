@@ -9,12 +9,16 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.sign_in_responsive_adaptative.model.WindowSizeClass
 import com.example.sign_in_responsive_adaptative.ui.theme.Black100
 import com.example.sign_in_responsive_adaptative.ui.theme.Gray100
 import com.example.sign_in_responsive_adaptative.ui.theme.Red50
 import com.example.sign_in_responsive_adaptative.ui.theme.TextFieldStyles
 import com.example.sign_in_responsive_adaptative.viewModel.MainViewModel
+import com.example.sign_in_responsive_adaptative.viewModel.getAdaptiveDimensions
+import com.example.sign_in_responsive_adaptative.viewModel.rememberWindowSize
 
 @Composable
 fun StandartTextField(
@@ -27,26 +31,49 @@ fun StandartTextField(
     id: String,
     modifier: Modifier = Modifier
 ) {
+    val windowSize = rememberWindowSize()
+    val dimensions = getAdaptiveDimensions(windowSize)
+
     val isValid = value.isEmpty() || regex.matches(value)
     val textColor = if (isValid) Black100 else Red50
     val assistiveColor = if (isValid) Gray100 else Red50
+
     viewModel.textValid(id, isValid)
-    Column(modifier = modifier) {
+
+    Column(
+        modifier = modifier.widthIn(max = dimensions.fieldWidth)
+    ) {
         BasicTextField(
             value = value,
             onValueChange = onValueChange,
-            textStyle = TextFieldStyles.inputText.copy(color = textColor),
+            textStyle = TextFieldStyles.inputText.copy(
+                color = textColor,
+                fontSize = when (windowSize.width) {
+                    WindowSizeClass.COMPACT -> 14.sp
+                    WindowSizeClass.MEDIUM -> 16.sp
+                    WindowSizeClass.EXPANDED -> 18.sp
+                }
+            ),
             decorationBox = { innerTextField ->
                 Column {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp)
+                            .padding(
+                                vertical = dimensions.verticalPadding,
+                                horizontal = dimensions.horizontalPadding
+                            )
                     ) {
                         if (value.isEmpty()) {
                             Text(
                                 text = placeholder,
-                                style = TextFieldStyles.placeholder
+                                style = TextFieldStyles.placeholder.copy(
+                                    fontSize = when (windowSize.width) {
+                                        WindowSizeClass.COMPACT -> 14.sp
+                                        WindowSizeClass.MEDIUM -> 16.sp
+                                        WindowSizeClass.EXPANDED -> 18.sp
+                                    }
+                                )
                             )
                         }
                         innerTextField()
@@ -54,7 +81,7 @@ fun StandartTextField(
 
                     Divider(
                         color = if (isValid) Black100 else Red50,
-                        thickness = 1.dp
+                        thickness = dimensions.dividerThickness
                     )
                 }
             },
@@ -65,11 +92,18 @@ fun StandartTextField(
 
         Text(
             text = assistiveText,
-            style = TextFieldStyles.assistiveText.copy(color = assistiveColor)
+            style = TextFieldStyles.assistiveText.copy(
+                color = assistiveColor,
+                fontSize = when (windowSize.width) {
+                    WindowSizeClass.COMPACT -> 12.sp
+                    WindowSizeClass.MEDIUM -> 13.sp
+                    WindowSizeClass.EXPANDED -> 14.sp
+                }
+            ),
+            modifier = Modifier.padding(horizontal = dimensions.horizontalPadding)
         )
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun TextfieldPreview() {
