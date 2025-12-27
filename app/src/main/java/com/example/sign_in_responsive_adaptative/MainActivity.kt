@@ -1,6 +1,6 @@
 package com.example.sign_in_responsive_adaptative
 
-import AppNavHost
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.sign_in_responsive_adaptative.ui.theme.Sign_in_responsive_adaptativeTheme
+import com.example.sign_in_responsive_adaptative.view.AppNavHost
 import com.example.sign_in_responsive_adaptative.view.Registre
 
 class MainActivity : ComponentActivity() {
